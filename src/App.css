@@ -45,7 +45,8 @@
 
 .primary-link,
 .secondary-link,
-.closing-actions a {
+.closing-actions a,
+.closing-actions button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -54,6 +55,7 @@
   border-radius: 8px;
   font-weight: 850;
   text-decoration: none;
+  cursor: pointer;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease,
@@ -68,15 +70,18 @@
 }
 
 .secondary-link,
-.closing-actions a {
+.closing-actions a,
+.closing-actions button {
   border: 1px solid var(--border);
+  background: transparent;
   color: var(--text-h);
   padding: 0 16px;
 }
 
 .primary-link:hover,
 .secondary-link:hover,
-.closing-actions a:hover {
+.closing-actions a:hover,
+.closing-actions button:hover {
   transform: translateY(-1px);
 }
 
@@ -85,7 +90,8 @@
 }
 
 .secondary-link:hover,
-.closing-actions a:hover {
+.closing-actions a:hover,
+.closing-actions button:hover {
   border-color: var(--accent);
   color: var(--accent);
 }
@@ -283,16 +289,34 @@
   color: #dce7e4;
 }
 
+.email-line {
+  width: fit-content;
+  border: 0;
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 850;
+  padding: 0;
+  text-decoration: none;
+}
+
+.email-line:hover {
+  text-decoration: underline;
+}
+
 .closing-actions {
   justify-content: flex-end;
 }
 
-.closing-actions a {
+.closing-actions a,
+.closing-actions button {
   border-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
 }
 
-.closing-actions a:hover {
+.closing-actions a:hover,
+.closing-actions button:hover {
   border-color: var(--gold);
   color: var(--gold);
 }
@@ -344,7 +368,8 @@
   }
 
   .hero-actions a,
-  .closing-actions a {
+  .closing-actions a,
+  .closing-actions button {
     flex: 1 1 150px;
   }
 

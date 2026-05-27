@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   BriefcaseBusiness,
   Code2,
@@ -19,6 +20,7 @@ import {
 import "./App.css";
 
 const resumeUrl = "/Yijun-Yuan-Resume.pdf";
+const emailAddress = "yijun.yuan@alumni.utoronto.ca";
 
 const focusAreas = [
   {
@@ -124,11 +126,6 @@ const contactLinks = [
     href: "https://www.linkedin.com/in/yijun-yuan-75331a22b/",
     Icon: BriefcaseBusiness,
   },
-  {
-    label: "Email",
-    href: "mailto:yijun.yuan@alumni.utoronto.ca",
-    Icon: Mail,
-  },
 ];
 
 function IconCard({ item }) {
@@ -164,6 +161,16 @@ function SkillGroup({ group }) {
 }
 
 function App() {
+  const [copiedEmail, setCopiedEmail] = useState(false);
+
+  async function copyEmail() {
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(emailAddress);
+    }
+    setCopiedEmail(true);
+    window.setTimeout(() => setCopiedEmail(false), 1800);
+  }
+
   return (
     <main className="page-shell">
       <section className="hero-section" aria-labelledby="intro-title">
@@ -183,7 +190,7 @@ function App() {
               <Download size={18} aria-hidden="true" />
               Resume
             </a>
-            <a className="secondary-link" href="mailto:yijun.yuan@alumni.utoronto.ca">
+            <a className="secondary-link" href="#contact">
               <Mail size={18} aria-hidden="true" />
               Contact
             </a>
@@ -299,7 +306,11 @@ function App() {
         </div>
       </section>
 
-      <section className="closing-section" aria-labelledby="contact-title">
+      <section
+        className="closing-section"
+        id="contact"
+        aria-labelledby="contact-title"
+      >
         <div>
           <p className="eyebrow">Open to opportunities</p>
           <h2 id="contact-title">Open to development and QA opportunities.</h2>
@@ -307,6 +318,9 @@ function App() {
             I am especially interested in teams where I can learn quickly,
             contribute carefully, and keep getting better.
           </p>
+          <button className="email-line" type="button" onClick={copyEmail}>
+            {copiedEmail ? "Copied email" : emailAddress}
+          </button>
         </div>
         <div className="closing-actions">
           {contactLinks.map(({ label, href, Icon }) => (
@@ -316,6 +330,10 @@ function App() {
               {label !== "Email" && <ExternalLink size={14} aria-hidden="true" />}
             </a>
           ))}
+          <button type="button" onClick={copyEmail}>
+            <Mail size={18} aria-hidden="true" />
+            {copiedEmail ? "Copied" : "Email"}
+          </button>
         </div>
         <Sparkles className="closing-mark" size={28} aria-hidden="true" />
       </section>
