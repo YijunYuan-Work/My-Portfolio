@@ -8,6 +8,7 @@ import {
   Gamepad2,
   GraduationCap,
   Lightbulb,
+  Link,
   Mail,
   MapPin,
   MountainSnow,
@@ -19,7 +20,7 @@ import {
 } from "lucide-react";
 import "./App.css";
 
-const resumeUrl = "/Yijun-Yuan-Resume.pdf";
+const resumeUrl = "/resume-developer.pdf";
 const emailAddress = "yijun.yuan@alumni.utoronto.ca";
 
 const focusAreas = [
@@ -128,6 +129,15 @@ const contactLinks = [
   },
 ];
 
+const sideProjects = [
+  {
+    title: "Apply Track",
+    href: "https://apply-track-six.vercel.app/",
+    copy: "A job application tracker for organizing companies, roles, statuses, and imported spreadsheet rows while managing the job search.",
+    highlights: ["React app", "Vite deployment", "Spreadsheet import workflow"],
+  },
+];
+
 function IconCard({ item }) {
   const { Icon } = item;
 
@@ -156,6 +166,31 @@ function SkillGroup({ group }) {
           <span key={skill}>{skill}</span>
         ))}
       </div>
+    </article>
+  );
+}
+
+function SideProjectCard({ project }) {
+  return (
+    <article className="side-project-card">
+      <div className="side-project-copy">
+        <div className="icon-card-heading">
+          <Link size={20} aria-hidden="true" />
+          <h3>{project.title}</h3>
+        </div>
+        <p>{project.copy}</p>
+      </div>
+
+      <div className="tag-list" aria-label={`${project.title} highlights`}>
+        {project.highlights.map((highlight) => (
+          <span key={highlight}>{highlight}</span>
+        ))}
+      </div>
+
+      <a className="project-link" href={project.href} target="_blank" rel="noreferrer">
+        Open project
+        <ExternalLink size={15} aria-hidden="true" />
+      </a>
     </article>
   );
 }
@@ -269,6 +304,19 @@ function App() {
               </div>
               <p>{item.copy}</p>
             </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="content-section" aria-labelledby="side-projects-title">
+        <div className="section-heading">
+          <p className="eyebrow">Side projects</p>
+          <h2 id="side-projects-title">Proof that I build outside class and work</h2>
+        </div>
+
+        <div className="side-project-list">
+          {sideProjects.map((project) => (
+            <SideProjectCard key={project.title} project={project} />
           ))}
         </div>
       </section>

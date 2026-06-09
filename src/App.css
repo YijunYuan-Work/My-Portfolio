@@ -100,7 +100,8 @@
 .icon-card,
 .skill-card,
 .education-item,
-.story-panel {
+.story-panel,
+.side-project-card {
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
@@ -205,6 +206,46 @@
   font-size: 0.8rem;
   font-weight: 850;
   padding: 5px 10px;
+}
+
+.side-project-list {
+  display: grid;
+  gap: 18px;
+}
+
+.side-project-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 22px;
+  align-items: center;
+  padding: 22px;
+}
+
+.side-project-copy {
+  display: grid;
+  gap: 12px;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 850;
+  padding: 0 16px;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.project-link:hover {
+  background: var(--accent-strong);
+  transform: translateY(-1px);
 }
 
 .split-section {
@@ -333,6 +374,7 @@
   .hero-section,
   .split-section,
   .experience-item,
+  .side-project-card,
   .closing-section {
     grid-template-columns: 1fr;
   }
