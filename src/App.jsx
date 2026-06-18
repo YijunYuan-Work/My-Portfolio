@@ -25,19 +25,41 @@ const emailAddress = "yijun.yuan@alumni.utoronto.ca";
 
 const focusAreas = [
   {
-    title: "Open to many developer paths",
+    title: "QA brain",
     Icon: Compass,
-    copy: "Frontend, backend, full-stack, data tooling, internal apps. I am still exploring, and I like that part.",
+    copy: "I look for edge cases, unclear states, and the tiny details that turn into real user frustration.",
   },
   {
-    title: "I learn by making things real",
+    title: "Builder brain",
     Icon: Wrench,
-    copy: "This portfolio is part of that process. I am building it while looking for small side projects with real users or real constraints.",
+    copy: "I learn fastest when the thing is real enough to break, improve, and explain to someone else.",
   },
   {
-    title: "QA made me a better developer",
+    title: "Systems brain",
     Icon: TestTube2,
-    copy: "Testing work taught me to slow down, reproduce issues clearly, and care about edge cases instead of only happy paths.",
+    copy: "I like workflows, dashboards, games, and feedback loops because they show how small decisions connect.",
+  },
+];
+
+const currentNotes = [
+  "Building small tools for real problems.",
+  "Improving this portfolio while learning React.",
+  "Open to developer and QA roles.",
+  "Based in Scarborough, Ontario.",
+];
+
+const deskNotes = [
+  {
+    label: "Open file",
+    value: "portfolio/App.jsx",
+  },
+  {
+    label: "Current build",
+    value: "Apply Track",
+  },
+  {
+    label: "Working style",
+    value: "small steps, clear notes",
   },
 ];
 
@@ -133,8 +155,15 @@ const sideProjects = [
   {
     title: "Apply Track",
     href: "https://apply-track-six.vercel.app/",
-    copy: "A job application tracker for organizing companies, roles, statuses, and imported spreadsheet rows while managing the job search.",
-    highlights: ["React app", "Vite deployment", "Spreadsheet import workflow"],
+    copy: "I built this because job applications started feeling like a spreadsheet with anxiety attached.",
+    problem:
+      "It helps me keep companies, roles, statuses, and imported spreadsheet rows in one calmer place while job searching.",
+    highlights: ["React", "Vite", "Spreadsheet import", "Personal workflow"],
+    rows: [
+      { role: "Frontend Intern", company: "Portfolio Lab", status: "Applied" },
+      { role: "QA Analyst", company: "Careful Systems", status: "Interview" },
+      { role: ".NET Developer", company: "Data Portal Team", status: "Saved" },
+    ],
   },
 ];
 
@@ -149,6 +178,42 @@ function IconCard({ item }) {
       </div>
       <p>{item.copy}</p>
     </article>
+  );
+}
+
+function DeskBoard() {
+  return (
+    <aside className="desk-board" aria-label="Current notes">
+      <div className="desk-topline">
+        <span className="desk-pin" aria-hidden="true" />
+        <span>currently</span>
+      </div>
+
+      <div className="desk-title">
+        <h2>On my desk</h2>
+        <p>Real work, real learning, still a little messy in the useful way.</p>
+      </div>
+
+      <div className="desk-list">
+        {currentNotes.map((note) => (
+          <p key={note}>{note}</p>
+        ))}
+      </div>
+
+      <div className="desk-meta">
+        {deskNotes.map((note) => (
+          <div key={note.label}>
+            <span>{note.label}</span>
+            <strong>{note.value}</strong>
+          </div>
+        ))}
+      </div>
+
+      <div className="location-line">
+        <MapPin size={18} aria-hidden="true" />
+        Scarborough, Ontario
+      </div>
+    </aside>
   );
 }
 
@@ -179,6 +244,7 @@ function SideProjectCard({ project }) {
           <h3>{project.title}</h3>
         </div>
         <p>{project.copy}</p>
+        <p className="side-project-problem">{project.problem}</p>
       </div>
 
       <div className="tag-list" aria-label={`${project.title} highlights`}>
@@ -187,10 +253,22 @@ function SideProjectCard({ project }) {
         ))}
       </div>
 
-      <a className="project-link" href={project.href} target="_blank" rel="noreferrer">
-        Open project
-        <ExternalLink size={15} aria-hidden="true" />
-      </a>
+      <div className="tracker-preview" aria-label={`${project.title} preview`}>
+        {project.rows.map((row) => (
+          <div className="tracker-row" key={`${row.company}-${row.role}`}>
+            <span>{row.role}</span>
+            <span>{row.company}</span>
+            <strong>{row.status}</strong>
+          </div>
+        ))}
+      </div>
+
+      <div className="project-actions">
+        <a className="project-link" href={project.href} target="_blank" rel="noreferrer">
+          Open project
+          <ExternalLink size={15} aria-hidden="true" />
+        </a>
+      </div>
     </article>
   );
 }
@@ -208,16 +286,31 @@ function App() {
 
   return (
     <main className="page-shell">
+      <nav className="site-nav" aria-label="Main navigation">
+        <a className="nav-mark" href="#top" aria-label="Back to top">
+          YY
+        </a>
+        <div className="nav-links">
+          <a href="#projects">Project</a>
+          <a href="#experience">Experience</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+
       <section className="hero-section" aria-labelledby="intro-title">
-        <div className="hero-copy">
-          <p className="eyebrow">Friendly, curious developer</p>
+        <div className="hero-copy" id="top">
+          <p className="eyebrow">Creative developer, careful tester</p>
           <h1 id="intro-title">Hi, I am Yijun.</h1>
 
           <p className="intro">
-            I am a Computer Science graduate and MSc student who likes turning
-            unclear problems into working, understandable systems. I am open to
-            software development and QA roles where I can help build reliable
-            products, learn quickly, and stay close to the details.
+            I build carefully, test patiently, and learn by making things real.
+            I am a Computer Science graduate and MSc student exploring software
+            development, QA, data tools, and practical side projects.
+          </p>
+
+          <p className="signature-line">
+            Currently turning job-search chaos, data workflows, and small
+            “wait, why is this broken?” moments into things I can actually use.
           </p>
 
           <div className="hero-actions" aria-label="Primary actions">
@@ -232,23 +325,13 @@ function App() {
           </div>
         </div>
 
-        <aside className="hero-panel" aria-label="Quick notes">
-          <div className="location-line">
-            <MapPin size={18} aria-hidden="true" />
-            Scarborough, Ontario
-          </div>
-          <div className="note-stack">
-            <span>Open to developer and QA roles</span>
-            <span>Still building my portfolio</span>
-            <span>Looking for practical side projects</span>
-          </div>
-        </aside>
+        <DeskBoard />
       </section>
 
       <section className="content-section" aria-labelledby="focus-title">
         <div className="section-heading">
-          <p className="eyebrow">What I am about</p>
-          <h2 id="focus-title">Curious enough to explore, patient enough to debug</h2>
+          <p className="eyebrow">How I think</p>
+          <h2 id="focus-title">A practical mix of testing, building, and curiosity</h2>
         </div>
 
         <div className="card-grid three-column">
@@ -275,6 +358,23 @@ function App() {
         </div>
       </section>
 
+      <section
+        className="content-section side-project-section"
+        id="projects"
+        aria-labelledby="side-projects-title"
+      >
+        <div className="section-heading">
+          <p className="eyebrow">Side project</p>
+          <h2 id="side-projects-title">A small tool for a real personal problem</h2>
+        </div>
+
+        <div className="side-project-list">
+          {sideProjects.map((project) => (
+            <SideProjectCard key={project.title} project={project} />
+          ))}
+        </div>
+      </section>
+
       <section className="content-section" aria-labelledby="skills-title">
         <div className="section-heading">
           <p className="eyebrow">Toolkit</p>
@@ -288,7 +388,7 @@ function App() {
         </div>
       </section>
 
-      <section className="content-section" aria-labelledby="experience-title">
+      <section className="content-section" id="experience" aria-labelledby="experience-title">
         <div className="section-heading">
           <p className="eyebrow">Experience</p>
           <h2 id="experience-title">A little production, a lot of learning</h2>
@@ -304,19 +404,6 @@ function App() {
               </div>
               <p>{item.copy}</p>
             </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="content-section" aria-labelledby="side-projects-title">
-        <div className="section-heading">
-          <p className="eyebrow">Side projects</p>
-          <h2 id="side-projects-title">Proof that I build outside class and work</h2>
-        </div>
-
-        <div className="side-project-list">
-          {sideProjects.map((project) => (
-            <SideProjectCard key={project.title} project={project} />
           ))}
         </div>
       </section>

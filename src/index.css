@@ -1,21 +1,40 @@
-:root {
-  --bg: #f6f8f7;
-  --surface: #ffffff;
-  --ink: #172126;
-  --text: #526164;
-  --text-h: #172126;
-  --muted: #708083;
-  --border: #d8e0df;
-  --accent: #0f766e;
-  --accent-strong: #0b5f59;
-  --accent-bg: #dff3ef;
-  --gold: #f4bf45;
-  --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap");
 
-  color: var(--text);
+:root {
+  --bg: #fafafa;
+  --paper: #ffffff;
+  --paper-warm: #fffaf0;
+  --paper-cool: #eff6ff;
+  --ink: #09090b;
+  --text: #3f3f46;
+  --muted: #71717a;
+  --border: #e4e4e7;
+  --border-strong: #c7c7cf;
+  --blue: #2563eb;
+  --blue-dark: #1d4ed8;
+  --blue-soft: #dbeafe;
+  --accent: var(--blue);
+  --accent-strong: var(--blue-dark);
+  --accent-bg: var(--blue-soft);
+  --gold: var(--yellow);
+  --gold-soft: #fff3c7;
+  --mint: #14b8a6;
+  --yellow: #f4bf45;
+  --rose: #fda4af;
+  --text-h: var(--ink);
+  --surface: var(--paper);
+  --surface-soft: #f8fbff;
+  --shadow: 0 18px 40px rgba(9, 9, 11, 0.08);
+  --shadow-sm: 0 1px 0 rgba(9, 9, 11, 0.08);
+  --shadow-md: 0 18px 40px rgba(9, 9, 11, 0.08);
+  --shadow-lg: 0 30px 80px rgba(9, 9, 11, 0.12);
+  --body-font: "Quicksand", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --hand-font: "Caveat", "Comic Sans MS", cursive;
+
   background: var(--bg);
-  font: 18px/1.55 var(--sans);
+  color: var(--text);
+  font: 18px/1.58 var(--body-font);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -28,7 +47,14 @@
 
 html {
   min-width: 320px;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(37, 99, 235, 0.08), transparent 28%),
+    radial-gradient(circle at 92% 8%, rgba(253, 164, 175, 0.16), transparent 24%),
+    linear-gradient(rgba(9, 9, 11, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(9, 9, 11, 0.03) 1px, transparent 1px),
+    var(--bg);
+  background-size: auto, auto, 36px 36px, 36px 36px, auto;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -54,19 +80,21 @@ p {
 h1,
 h2,
 h3 {
-  color: var(--text-h);
+  color: var(--ink);
   line-height: 1.1;
 }
 
 h1 {
-  max-width: 880px;
+  max-width: 900px;
   margin-bottom: 0;
-  font-size: clamp(3.1rem, 7vw, 5.7rem);
+  font-size: 5.65rem;
+  letter-spacing: 0;
 }
 
 h2 {
   margin-bottom: 12px;
-  font-size: clamp(1.8rem, 3vw, 2.35rem);
+  font-size: 2.45rem;
+  letter-spacing: 0;
 }
 
 p {
@@ -74,11 +102,31 @@ p {
 }
 
 a:focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--blue);
   outline-offset: 3px;
 }
 
 ::selection {
-  background: var(--accent-bg);
-  color: var(--text-h);
+  background: var(--blue-soft);
+  color: var(--ink);
+}
+
+@media (max-width: 960px) {
+  h1 {
+    font-size: 4.1rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 700px) {
+  h1 {
+    font-size: 3rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
 }
