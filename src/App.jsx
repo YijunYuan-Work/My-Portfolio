@@ -50,12 +50,12 @@ const currentNotes = [
 
 const deskNotes = [
   {
-    label: "Open file",
-    value: "portfolio/App.jsx",
+    label: "Learning now",
+    value: "React portfolio",
   },
   {
-    label: "Current build",
-    value: "Apply Track",
+    label: "Side project",
+    value: "Apply Track + French Desk",
   },
   {
     label: "Working style",
@@ -155,14 +155,62 @@ const sideProjects = [
   {
     title: "Apply Track",
     href: "https://apply-track-six.vercel.app/",
+    cta: "Open project",
+    preview: "applyTrack",
     copy: "I built this because job applications started feeling like a spreadsheet with anxiety attached.",
     problem:
       "It helps me keep companies, roles, statuses, and imported spreadsheet rows in one calmer place while job searching.",
     highlights: ["React", "Vite", "Spreadsheet import", "Personal workflow"],
-    rows: [
-      { role: "Frontend Intern", company: "Portfolio Lab", status: "Applied" },
-      { role: "QA Analyst", company: "Careful Systems", status: "Interview" },
-      { role: ".NET Developer", company: "Data Portal Team", status: "Saved" },
+    applications: [
+      {
+        company: "CJR Wholesale Grocers and Dairy Central",
+        role: "Business Analyst",
+        status: "Applied",
+        fields: [
+          ["Location", "Not specified"],
+          ["Applied", "2026-06-18"],
+          ["Follow-up", "Not set"],
+          ["Interviews", "0"],
+        ],
+      },
+      {
+        company: "Telus",
+        role: "Quality Assurance Analyst",
+        status: "Applied",
+        fields: [
+          ["Location", "Toronto"],
+          ["Applied", "2026-06-18"],
+          ["Contact", "Not set"],
+          ["Referral", "No"],
+        ],
+      },
+    ],
+  },
+  {
+    title: "French Desk",
+    href: "https://github.com/YijunYuan-Work/FrenchLearning",
+    cta: "View repo",
+    preview: "frenchDesk",
+    copy: "I built this because my French notes were becoming one long document that was hard to review.",
+    problem:
+      "It gives me a calmer place to collect vocabulary, phrases, grammar, pronunciation notes, quizzes, and short daily study sessions.",
+    highlights: [
+      "React",
+      "Supabase",
+      "Tailwind",
+      "Daily practice",
+      "AI vocabulary autofill",
+    ],
+    metrics: [
+      ["Vocabulary due", "12"],
+      ["Daily goal", "20"],
+      ["Saved notes", "84"],
+      ["Mastered", "18"],
+    ],
+    dailySteps: [
+      ["Add a new note", "Capture one useful word or phrase."],
+      ["Study flashcards", "Review cards that still feel new."],
+      ["Start today's quiz", "Check recall and advance confidence."],
     ],
   },
 ];
@@ -235,6 +283,144 @@ function SkillGroup({ group }) {
   );
 }
 
+function ApplyTrackPreview({ project }) {
+  return (
+    <div className="tracker-preview applytrack-preview" aria-label={`${project.title} preview`}>
+      <aside className="preview-sidebar" aria-hidden="true">
+        <div className="preview-brand">
+          <span>A</span>
+          <strong>ApplyTrack</strong>
+        </div>
+        <p>Workspace for John</p>
+
+        <div className="preview-nav">
+          <span className="active">Dashboard</span>
+          <span>Profile</span>
+          <span>Progress</span>
+          <span>Import Excel</span>
+        </div>
+
+        <div className="preview-add">Add application</div>
+
+        <div className="preview-focus">
+          <span>Focus mode</span>
+          Keep the pipeline moving.
+        </div>
+      </aside>
+
+      <div className="preview-dashboard">
+        <div className="preview-select">Select</div>
+
+        <div className="preview-toolbar">
+          <strong>Showing 1-10 of 101</strong>
+          <span>Per page&nbsp; 10</span>
+          <strong>Page 1 of 11</strong>
+        </div>
+
+        <div className="preview-job-list">
+          {project.applications.map((application) => (
+            <article className="preview-job-card" key={`${application.company}-${application.role}`}>
+              <div className="preview-job-heading">
+                <div>
+                  <h4>{application.company}</h4>
+                  <p>{application.role}</p>
+                </div>
+                <span>{application.status}</span>
+              </div>
+
+              <div className="preview-field-grid">
+                {application.fields.map(([label, value]) => (
+                  <div className="preview-field" key={`${application.company}-${label}`}>
+                    <span>{label}</span>
+                    <strong>{value}</strong>
+                  </div>
+                ))}
+              </div>
+
+              <div className="preview-actions" aria-hidden="true">
+                <span>Open job</span>
+                <span>Edit</span>
+                <span>Delete</span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FrenchDeskPreview({ project }) {
+  return (
+    <div className="tracker-preview french-preview" aria-label={`${project.title} preview`}>
+      <aside className="french-sidebar" aria-hidden="true">
+        <div className="french-brand">
+          <span>F</span>
+          <div>
+            <p>French Desk</p>
+            <strong>Learning Hub</strong>
+          </div>
+        </div>
+
+        <div className="french-nav">
+          <span className="active">Today</span>
+          <span>Study</span>
+          <span>Quiz</span>
+          <span>Vocabulary</span>
+          <span>Grammar</span>
+        </div>
+
+        <div className="french-progress">
+          <div>
+            <strong>Daily progress</strong>
+            <span>67%</span>
+          </div>
+          <div className="french-progress-bar">
+            <span />
+          </div>
+          <p>2/3 tasks complete today.</p>
+        </div>
+      </aside>
+
+      <div className="french-dashboard">
+        <div className="french-header">
+          <p>Bonjour, John.</p>
+          <strong>Ready for 12 minutes of French?</strong>
+        </div>
+
+        <div className="french-metrics">
+          {project.metrics.map(([label, value]) => (
+            <div key={label}>
+              <span>{label}</span>
+              <strong>{value}</strong>
+            </div>
+          ))}
+        </div>
+
+        <div className="french-path">
+          <div>
+            <span>12-minute practice</span>
+            <strong>Your French path for today</strong>
+            <p>
+              Capture something useful, review what is fading, then quiz what is ready.
+            </p>
+          </div>
+          <div className="french-route" aria-hidden="true">Go</div>
+        </div>
+
+        <div className="french-step-grid">
+          {project.dailySteps.map(([title, copy]) => (
+            <article key={title}>
+              <strong>{title}</strong>
+              <p>{copy}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SideProjectCard({ project }) {
   return (
     <article className="side-project-card">
@@ -253,19 +439,12 @@ function SideProjectCard({ project }) {
         ))}
       </div>
 
-      <div className="tracker-preview" aria-label={`${project.title} preview`}>
-        {project.rows.map((row) => (
-          <div className="tracker-row" key={`${row.company}-${row.role}`}>
-            <span>{row.role}</span>
-            <span>{row.company}</span>
-            <strong>{row.status}</strong>
-          </div>
-        ))}
-      </div>
+      {project.preview === "applyTrack" && <ApplyTrackPreview project={project} />}
+      {project.preview === "frenchDesk" && <FrenchDeskPreview project={project} />}
 
       <div className="project-actions">
         <a className="project-link" href={project.href} target="_blank" rel="noreferrer">
-          Open project
+          {project.cta}
           <ExternalLink size={15} aria-hidden="true" />
         </a>
       </div>
@@ -310,7 +489,7 @@ function App() {
 
           <p className="signature-line">
             Currently turning job-search chaos, data workflows, and small
-            “wait, why is this broken?” moments into things I can actually use.
+            "wait, why is this broken?" moments into things I can actually use.
           </p>
 
           <div className="hero-actions" aria-label="Primary actions">
@@ -364,8 +543,8 @@ function App() {
         aria-labelledby="side-projects-title"
       >
         <div className="section-heading">
-          <p className="eyebrow">Side project</p>
-          <h2 id="side-projects-title">A small tool for a real personal problem</h2>
+          <p className="eyebrow">Side projects</p>
+          <h2 id="side-projects-title">Small tools for real personal problems</h2>
         </div>
 
         <div className="side-project-list">
@@ -391,7 +570,7 @@ function App() {
       <section className="content-section" id="experience" aria-labelledby="experience-title">
         <div className="section-heading">
           <p className="eyebrow">Experience</p>
-          <h2 id="experience-title">A little production, a lot of learning</h2>
+          <h2 id="experience-title">Contributing to real systems while growing fast</h2>
         </div>
 
         <div className="experience-list">
