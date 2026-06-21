@@ -188,8 +188,8 @@ const sideProjects = [
   },
   {
     title: "French Desk",
-    href: "https://github.com/YijunYuan-Work/FrenchLearning",
-    cta: "View repo",
+    href: "https://french-learning-theta.vercel.app/",
+    cta: "Open project",
     preview: "frenchDesk",
     copy: "I built this because my French notes were becoming one long document that was hard to review.",
     problem:
