@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   BriefcaseBusiness,
   Code2,
@@ -225,48 +225,104 @@ function ExperienceLogo({ type }) {
 }
 
 function ApplyTrackPreview({ project }) {
-  const [primaryApplication, secondaryApplication] = project.applications;
+  const [primaryApplication] = project.applications;
 
   return (
     <div className="tracker-preview applytrack-preview" aria-label={`${project.title} preview`}>
-      <div className="apply-showcase-sidebar" aria-hidden="true">
-        <span>A</span>
-        <strong>ApplyTrack</strong>
-        <p>Workspace for John</p>
-        <div className="apply-showcase-nav">
-          <span>Dashboard</span>
-          <span>Progress</span>
-          <span>Import</span>
-        </div>
-      </div>
-
-      <div className="apply-showcase-stage" aria-hidden="true">
-        <div className="apply-showcase-toolbar">
-          <strong>101 applications</strong>
-          <span>Applied</span>
-        </div>
-
-        <article className="apply-showcase-card apply-showcase-card-main">
-          <span>{primaryApplication.status}</span>
-          <h4>{primaryApplication.company}</h4>
-          <p>{primaryApplication.role}</p>
-          <div>
-            <strong>Applied</strong>
-            <strong>Interview</strong>
-            <strong>Follow-up</strong>
+      <div className="apply-component-stage" aria-hidden="true">
+        <article className="apply-component-card apply-component-dashboard">
+          <aside className="apply-component-sidebar">
+            <span>A</span>
+            <strong>ApplyTrack</strong>
+            <p>Workspace for John</p>
+            <div>
+              <b>Dashboard</b>
+              <b>Profile</b>
+              <b>Progress</b>
+              <b>Import Excel</b>
+            </div>
+          </aside>
+          <div className="apply-dashboard-panel">
+            <div className="apply-dashboard-hero">
+              <p>Application dashboard</p>
+              <strong>Track your job search in one place.</strong>
+            </div>
+            <div className="apply-dashboard-metrics">
+              <span>Total pipeline <b>150</b><small>129 actively applied</small></span>
+              <span>Interviews <b>2</b><small>1% interview motion</small></span>
+              <span>Offers <b>0</b><small>Wins in sight</small></span>
+            </div>
+            <div className="apply-dashboard-toolbar">
+              <strong>Showing 1-10 of 150</strong>
+              <span>Per page 10</span>
+              <span>Page 1 of 15</span>
+            </div>
+            <div className="apply-dashboard-card">
+              <span>{primaryApplication.status}</span>
+              <strong>Intact</strong>
+              <p>Junior Systems Pricing/Underwriting Programmer Analyst</p>
+              <div>
+                {[
+                  ["Location", "Toronto Hybrid"],
+                  ["Applied", "2026-06-26"],
+                  ["Follow-up", "Not set"],
+                  ["Interviews", "0"],
+                ].map(([label, value]) => (
+                  <small key={label}>
+                    {label}
+                    <b>{value}</b>
+                  </small>
+                ))}
+              </div>
+            </div>
           </div>
         </article>
 
-        <article className="apply-showcase-card apply-showcase-card-secondary">
-          <span>{secondaryApplication.status}</span>
-          <h4>{secondaryApplication.company}</h4>
-          <p>{secondaryApplication.role}</p>
+        <article className="apply-component-card apply-component-form">
+          <div className="apply-component-header">
+            <span>+</span>
+            <div>
+              <strong>Add new application</strong>
+              <p>Capture the role details.</p>
+            </div>
+          </div>
+          <div className="apply-form-grid">
+            {[
+              ["Company", "Acme Inc."],
+              ["Role", "Product Designer"],
+              ["Location", "Remote"],
+              ["Status", "Applied"],
+              ["Applied date", "2026-06-26"],
+              ["Follow-up date", "yyyy-mm-dd"],
+              ["Interview count", "0"],
+              ["Job link", "https://company.com/careers/role"],
+            ].map(([field, value]) => (
+              <label key={field}>
+                <span>{field}</span>
+                <i>{value}</i>
+              </label>
+            ))}
+          </div>
+          <button type="button" tabIndex="-1">Add application</button>
         </article>
 
-        <div className="apply-showcase-note">
-          <strong>Next action</strong>
-          Keep the pipeline moving.
-        </div>
+        <article className="apply-component-card apply-component-pipeline">
+          <img
+            className="apply-preview-shot"
+            src="/project-previews/applytrack-pipeline-map.png"
+            alt=""
+            loading="lazy"
+          />
+        </article>
+
+        <article className="apply-component-card apply-component-calendar">
+          <img
+            className="apply-preview-shot"
+            src="/project-previews/applytrack-calendar.png"
+            alt=""
+            loading="lazy"
+          />
+        </article>
       </div>
     </div>
   );
@@ -275,77 +331,80 @@ function ApplyTrackPreview({ project }) {
 function FrenchDeskPreview({ project }) {
   return (
     <div className="tracker-preview french-preview" aria-label={`${project.title} preview`}>
-      <aside className="french-sidebar" aria-hidden="true">
-        <div className="french-brand">
-          <span>F</span>
-          <div>
-            <p>French Desk</p>
-            <strong>Learning Hub</strong>
-          </div>
-        </div>
+      <div className="french-component-stage" aria-hidden="true">
+        <article className="french-component-card french-component-today">
+          <img
+            className="french-preview-shot"
+            src="/project-previews/frenchdesk-today.png"
+            alt=""
+            loading="lazy"
+          />
+        </article>
 
-        <div className="french-nav">
-          <span className="active">Today</span>
-          <span>Study</span>
-          <span>Quiz</span>
-          <span>Vocabulary</span>
-          <span>Grammar</span>
-        </div>
+        <article className="french-component-card french-component-study">
+          <img
+            className="french-preview-shot"
+            src="/project-previews/frenchdesk-study.png"
+            alt=""
+            loading="lazy"
+          />
+        </article>
 
-        <div className="french-progress">
-          <div>
-            <strong>Daily progress</strong>
-            <span>67%</span>
-          </div>
-          <div className="french-progress-bar">
-            <span />
-          </div>
-          <p>2/3 tasks complete today.</p>
-        </div>
-      </aside>
+        <article className="french-component-card french-component-quiz">
+          <img
+            className="french-preview-shot"
+            src="/project-previews/frenchdesk-quiz.png"
+            alt=""
+            loading="lazy"
+          />
+        </article>
 
-      <div className="french-dashboard">
-        <div className="french-header">
-          <p>Bonjour, John.</p>
-          <strong>Ready for 12 minutes of French?</strong>
-        </div>
-
-        <div className="french-metrics">
-          {project.metrics.map(([label, value]) => (
-            <div key={label}>
-              <span>{label}</span>
-              <strong>{value}</strong>
-            </div>
-          ))}
-        </div>
-
-        <div className="french-path">
-          <div>
-            <span>12-minute practice</span>
-            <strong>Your French path for today</strong>
-            <p>
-              Capture something useful, review what is fading, then quiz what is ready.
-            </p>
-          </div>
-          <div className="french-route" aria-hidden="true">Go</div>
-        </div>
-
-        <div className="french-step-grid">
-          {project.dailySteps.map(([title, copy]) => (
-            <article key={title}>
-              <strong>{title}</strong>
-              <p>{copy}</p>
-            </article>
-          ))}
-        </div>
+        <article className="french-component-card french-component-vocabulary">
+          <img
+            className="french-preview-shot"
+            src="/project-previews/frenchdesk-vocabulary.png"
+            alt=""
+            loading="lazy"
+          />
+        </article>
       </div>
     </div>
   );
 }
 
 function SideProjectCard({ project }) {
+  const cardRef = useRef(null);
+  const [isShowcaseVisible, setIsShowcaseVisible] = useState(false);
+
+  useEffect(() => {
+    if (!["applyTrack", "frenchDesk"].includes(project.preview) || !cardRef.current) {
+      return undefined;
+    }
+
+    const previewSelector =
+      project.preview === "applyTrack" ? ".applytrack-preview" : ".french-preview";
+    const observedElement =
+      cardRef.current.querySelector(previewSelector) || cardRef.current;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsShowcaseVisible(entry.isIntersecting);
+      },
+      { rootMargin: "-12% 0px -18% 0px", threshold: 0.32 },
+    );
+
+    observer.observe(observedElement);
+
+    return () => observer.disconnect();
+  }, [project.preview]);
+
   return (
-    <article className={`side-project-card side-project-card-${project.preview}`}>
+    <article
+      className={`side-project-card side-project-card-${project.preview} ${
+        isShowcaseVisible ? "is-showcase-visible" : ""
+      }`}
+      ref={cardRef}
+    >
       <div className="side-project-copy">
         <div className="icon-card-heading">
           <h3>{project.title}</h3>
@@ -355,14 +414,18 @@ function SideProjectCard({ project }) {
             <dt>Role</dt>
             <dd>{project.role}</dd>
           </div>
-          <div>
-            <dt>Year</dt>
-            <dd>{project.year}</dd>
-          </div>
-          <div>
-            <dt>Stack</dt>
-            <dd>{project.stack}</dd>
-          </div>
+          {project.preview !== "applyTrack" && (
+            <>
+              <div>
+                <dt>Year</dt>
+                <dd>{project.year}</dd>
+              </div>
+              <div>
+                <dt>Stack</dt>
+                <dd>{project.stack}</dd>
+              </div>
+            </>
+          )}
         </dl>
         <p>{project.copy}</p>
         <p className="side-project-problem">{project.problem}</p>
