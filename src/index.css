@@ -54,7 +54,7 @@ html {
     linear-gradient(90deg, rgba(9, 9, 11, 0.03) 1px, transparent 1px),
     var(--bg);
   background-size: auto, auto, 36px 36px, 36px 36px, auto;
-  overflow-x: hidden;
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
 
@@ -62,7 +62,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 button,

@@ -225,85 +225,25 @@ function ExperienceLogo({ type }) {
 }
 
 function ApplyTrackPreview({ project }) {
-  const [primaryApplication] = project.applications;
-
   return (
     <div className="tracker-preview applytrack-preview" aria-label={`${project.title} preview`}>
       <div className="apply-component-stage" aria-hidden="true">
         <article className="apply-component-card apply-component-dashboard">
-          <aside className="apply-component-sidebar">
-            <span>A</span>
-            <strong>ApplyTrack</strong>
-            <p>Workspace for John</p>
-            <div>
-              <b>Dashboard</b>
-              <b>Profile</b>
-              <b>Progress</b>
-              <b>Import Excel</b>
-            </div>
-          </aside>
-          <div className="apply-dashboard-panel">
-            <div className="apply-dashboard-hero">
-              <p>Application dashboard</p>
-              <strong>Track your job search in one place.</strong>
-            </div>
-            <div className="apply-dashboard-metrics">
-              <span>Total pipeline <b>150</b><small>129 actively applied</small></span>
-              <span>Interviews <b>2</b><small>1% interview motion</small></span>
-              <span>Offers <b>0</b><small>Wins in sight</small></span>
-            </div>
-            <div className="apply-dashboard-toolbar">
-              <strong>Showing 1-10 of 150</strong>
-              <span>Per page 10</span>
-              <span>Page 1 of 15</span>
-            </div>
-            <div className="apply-dashboard-card">
-              <span>{primaryApplication.status}</span>
-              <strong>Intact</strong>
-              <p>Junior Systems Pricing/Underwriting Programmer Analyst</p>
-              <div>
-                {[
-                  ["Location", "Toronto Hybrid"],
-                  ["Applied", "2026-06-26"],
-                  ["Follow-up", "Not set"],
-                  ["Interviews", "0"],
-                ].map(([label, value]) => (
-                  <small key={label}>
-                    {label}
-                    <b>{value}</b>
-                  </small>
-                ))}
-              </div>
-            </div>
-          </div>
+          <img
+            className="apply-preview-shot"
+            src="/project-previews/applytrack-dashboard.png"
+            alt=""
+            loading="lazy"
+          />
         </article>
 
         <article className="apply-component-card apply-component-form">
-          <div className="apply-component-header">
-            <span>+</span>
-            <div>
-              <strong>Add new application</strong>
-              <p>Capture the role details.</p>
-            </div>
-          </div>
-          <div className="apply-form-grid">
-            {[
-              ["Company", "Acme Inc."],
-              ["Role", "Product Designer"],
-              ["Location", "Remote"],
-              ["Status", "Applied"],
-              ["Applied date", "2026-06-26"],
-              ["Follow-up date", "yyyy-mm-dd"],
-              ["Interview count", "0"],
-              ["Job link", "https://company.com/careers/role"],
-            ].map(([field, value]) => (
-              <label key={field}>
-                <span>{field}</span>
-                <i>{value}</i>
-              </label>
-            ))}
-          </div>
-          <button type="button" tabIndex="-1">Add application</button>
+          <img
+            className="apply-preview-shot"
+            src="/project-previews/applytrack-add-apply.png"
+            alt=""
+            loading="lazy"
+          />
         </article>
 
         <article className="apply-component-card apply-component-pipeline">
@@ -414,38 +354,26 @@ function SideProjectCard({ project }) {
             <dt>Role</dt>
             <dd>{project.role}</dd>
           </div>
-          {project.preview !== "applyTrack" && (
-            <>
-              <div>
-                <dt>Year</dt>
-                <dd>{project.year}</dd>
-              </div>
-              <div>
-                <dt>Stack</dt>
-                <dd>{project.stack}</dd>
-              </div>
-            </>
-          )}
         </dl>
         <p>{project.copy}</p>
         <p className="side-project-problem">{project.problem}</p>
-      </div>
 
-      <div className="tag-list" aria-label={`${project.title} highlights`}>
-        {project.highlights.map((highlight) => (
-          <span key={highlight}>{highlight}</span>
-        ))}
+        <div className="tag-list" aria-label={`${project.title} highlights`}>
+          {project.highlights.map((highlight) => (
+            <span key={highlight}>{highlight}</span>
+          ))}
+        </div>
+
+        <div className="project-actions">
+          <a className="project-link" href={project.href} target="_blank" rel="noreferrer">
+            {project.cta}
+            <ExternalLink size={15} aria-hidden="true" />
+          </a>
+        </div>
       </div>
 
       {project.preview === "applyTrack" && <ApplyTrackPreview project={project} />}
       {project.preview === "frenchDesk" && <FrenchDeskPreview project={project} />}
-
-      <div className="project-actions">
-        <a className="project-link" href={project.href} target="_blank" rel="noreferrer">
-          {project.cta}
-          <ExternalLink size={15} aria-hidden="true" />
-        </a>
-      </div>
     </article>
   );
 }
@@ -505,11 +433,13 @@ function App() {
         aria-labelledby="experience-title"
       >
         <div className="section-heading">
-          <h2 id="experience-title">Work Experience</h2>
-          <p className="experience-subtitle">
-            Co-op roles where I contributed to production systems, QA workflows,
-            and public-sector data tools.
-          </p>
+          <div className="experience-heading-sticky">
+            <h2 id="experience-title">Work Experience</h2>
+            <p className="experience-subtitle">
+              Co-op roles where I contributed to production systems, QA workflows,
+              and public-sector data tools.
+            </p>
+          </div>
         </div>
 
         <div className="experience-list">
@@ -557,10 +487,10 @@ function App() {
       >
         <div>
           <p className="eyebrow">Open to opportunities</p>
-          <h2 id="contact-title">Open to development and QA opportunities.</h2>
+          <h2 id="contact-title">Don't be shy, come say Hi.</h2>
           <p>
-            I am especially interested in teams where I can learn quickly,
-            contribute carefully, and keep getting better.
+            I am especially interested in teams where I can build useful products,
+            contribute carefully, and keep growing while making impact.
           </p>
           <button className="email-line" type="button" onClick={copyEmail}>
             {copiedEmail ? "Copied email" : emailAddress}
