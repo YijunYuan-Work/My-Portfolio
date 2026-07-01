@@ -2134,8 +2134,7 @@
 }
 
 .side-project-copy {
-  position: sticky;
-  top: 104px;
+  position: static;
   display: grid;
   gap: 18px;
   padding-right: 0;
@@ -3210,7 +3209,7 @@
 
 .side-project-card-applyTrack .applytrack-preview {
   display: block;
-  min-height: 900px;
+  min-height: 650px;
   overflow: visible;
   border: 0;
   border-radius: 0;
@@ -3220,7 +3219,7 @@
 
 .apply-component-stage {
   position: relative;
-  min-height: 900px;
+  min-height: 650px;
   overflow: visible;
 }
 
