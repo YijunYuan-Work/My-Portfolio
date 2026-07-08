@@ -4133,3 +4133,119 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Generated live project previews */
+.side-project-card-applyTrack .project-preview,
+.side-project-card-frenchDesk .project-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.project-preview-frame {
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(13, 22, 36, 0.12);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 34px 90px rgba(13, 22, 36, 0.16);
+  color: inherit;
+  opacity: 0;
+  text-decoration: none;
+  transform: translateY(34px) scale(0.97);
+}
+
+.is-showcase-visible .project-preview-frame {
+  animation: project-preview-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.project-preview-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 8px) minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  border-bottom: 1px solid rgba(13, 22, 36, 0.08);
+  background: #f8fafc;
+  padding: 12px 16px;
+}
+
+.project-preview-bar span {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #d6deea;
+}
+
+.project-preview-bar strong {
+  overflow: hidden;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.project-preview-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: top left;
+}
+
+.project-preview-note {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  align-self: flex-start;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.side-project-card-frenchDesk .project-preview {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.side-project-card-frenchDesk .project-preview-image {
+  object-position: top left;
+}
+
+@keyframes project-preview-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(34px) scale(0.97);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-preview-frame,
+  .is-showcase-visible .project-preview-frame {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .side-project-card-applyTrack .project-preview,
+  .side-project-card-frenchDesk .project-preview {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}

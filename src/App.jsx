@@ -74,6 +74,9 @@ const sideProjects = [
     href: "https://apply-track-six.vercel.app/",
     cta: "Open project",
     preview: "applyTrack",
+    previewImage: "/project-previews/applytrack-dashboard.png",
+    previewUrl: "https://apply-track-six.vercel.app/#/demo",
+    previewLabel: "ApplyTrack live demo preview",
     copy: "I built this because job applications started feeling like a spreadsheet with anxiety attached.",
     problem:
       "It helps me keep companies, roles, statuses, and imported spreadsheet rows in one calmer place while job searching.",
@@ -111,6 +114,9 @@ const sideProjects = [
     href: "https://french-learning-theta.vercel.app/",
     cta: "Open project",
     preview: "frenchDesk",
+    previewImage: "/project-previews/frenchdesk-today.png",
+    previewUrl: "https://french-learning-theta.vercel.app/#/demo",
+    previewLabel: "French Desk live demo preview",
     copy: "I built this because my French notes were becoming one long document that was hard to review.",
     problem:
       "It gives me a calmer place to collect vocabulary, phrases, grammar, pronunciation notes, quizzes, and short daily study sessions.",
@@ -224,89 +230,38 @@ function ExperienceLogo({ type }) {
   );
 }
 
-function ApplyTrackPreview({ project }) {
+function ProjectPreview({ project }) {
+  const previewClass =
+    project.preview === "applyTrack" ? "applytrack-preview" : "french-preview";
+
   return (
-    <div className="tracker-preview applytrack-preview" aria-label={`${project.title} preview`}>
-      <div className="apply-component-stage" aria-hidden="true">
-        <article className="apply-component-card apply-component-dashboard">
-          <img
-            className="apply-preview-shot"
-            src="/project-previews/applytrack-dashboard.png"
-            alt=""
-            loading="lazy"
-          />
-        </article>
-
-        <article className="apply-component-card apply-component-form">
-          <img
-            className="apply-preview-shot"
-            src="/project-previews/applytrack-add-apply.png"
-            alt=""
-            loading="lazy"
-          />
-        </article>
-
-        <article className="apply-component-card apply-component-pipeline">
-          <img
-            className="apply-preview-shot"
-            src="/project-previews/applytrack-pipeline-map.png"
-            alt=""
-            loading="lazy"
-          />
-        </article>
-
-        <article className="apply-component-card apply-component-calendar">
-          <img
-            className="apply-preview-shot"
-            src="/project-previews/applytrack-calendar.png"
-            alt=""
-            loading="lazy"
-          />
-        </article>
-      </div>
-    </div>
-  );
-}
-
-function FrenchDeskPreview({ project }) {
-  return (
-    <div className="tracker-preview french-preview" aria-label={`${project.title} preview`}>
-      <div className="french-component-stage" aria-hidden="true">
-        <article className="french-component-card french-component-today">
-          <img
-            className="french-preview-shot"
-            src="/project-previews/frenchdesk-today.png"
-            alt=""
-            loading="lazy"
-          />
-        </article>
-
-        <article className="french-component-card french-component-study">
-          <img
-            className="french-preview-shot"
-            src="/project-previews/frenchdesk-study.png"
-            alt=""
-            loading="lazy"
-          />
-        </article>
-
-        <article className="french-component-card french-component-quiz">
-          <img
-            className="french-preview-shot"
-            src="/project-previews/frenchdesk-quiz.png"
-            alt=""
-            loading="lazy"
-          />
-        </article>
-
-        <article className="french-component-card french-component-vocabulary">
-          <img
-            className="french-preview-shot"
-            src="/project-previews/frenchdesk-vocabulary.png"
-            alt=""
-            loading="lazy"
-          />
-        </article>
+    <div
+      className={`tracker-preview project-preview ${previewClass}`}
+      aria-label={`${project.title} preview`}
+    >
+      <a
+        className="project-preview-frame"
+        href={project.previewUrl}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={`Open ${project.title} live preview`}
+      >
+        <span className="project-preview-bar" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+          <strong>{project.previewLabel}</strong>
+        </span>
+        <img
+          className="project-preview-image"
+          src={project.previewImage}
+          alt={`${project.title} product preview`}
+          loading="lazy"
+        />
+      </a>
+      <div className="project-preview-note">
+        <span>Live app snapshot</span>
+        <ExternalLink size={14} aria-hidden="true" />
       </div>
     </div>
   );
@@ -317,14 +272,12 @@ function SideProjectCard({ project }) {
   const [isShowcaseVisible, setIsShowcaseVisible] = useState(false);
 
   useEffect(() => {
-    if (!["applyTrack", "frenchDesk"].includes(project.preview) || !cardRef.current) {
+    if (!project.previewImage || !cardRef.current) {
       return undefined;
     }
 
-    const previewSelector =
-      project.preview === "applyTrack" ? ".applytrack-preview" : ".french-preview";
     const observedElement =
-      cardRef.current.querySelector(previewSelector) || cardRef.current;
+      cardRef.current.querySelector(".project-preview") || cardRef.current;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -336,7 +289,7 @@ function SideProjectCard({ project }) {
     observer.observe(observedElement);
 
     return () => observer.disconnect();
-  }, [project.preview]);
+  }, [project.previewImage]);
 
   return (
     <article
@@ -372,8 +325,7 @@ function SideProjectCard({ project }) {
         </div>
       </div>
 
-      {project.preview === "applyTrack" && <ApplyTrackPreview project={project} />}
-      {project.preview === "frenchDesk" && <FrenchDeskPreview project={project} />}
+      <ProjectPreview project={project} />
     </article>
   );
 }
