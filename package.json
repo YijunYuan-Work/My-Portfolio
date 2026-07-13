@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "capture:previews": "node scripts/capture-project-previews.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
