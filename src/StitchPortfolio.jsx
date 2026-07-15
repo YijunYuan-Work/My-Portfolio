@@ -14,106 +14,16 @@ import {
   X,
 } from "lucide-react";
 import "./StitchPortfolio.css";
+import { portfolioContent } from "./portfolioContent.js";
 
 const resumeUrl = "/resume-developer.pdf";
 const emailAddress = "yijun.yuan@alumni.utoronto.ca";
 
-const terminalWords = [
-  "software_developer",
-  "product_designer",
-  "qa_minded_builder",
-  "fullstack_learner",
-  "ship_useful_tools",
-];
-
-const navLinks = [
-  { name: "Projects", href: "#projects" },
-  { name: "Skills", href: "#skills" },
-  { name: "Experience", href: "#experience" },
-  { name: "Contact", href: "#contact" },
-];
-
-const sideProjects = [
-  {
-    id: "apply-track",
-    title: "Apply Track",
-    category: "workflow",
-    role: "Designer & Developer",
-    href: "https://apply-track-six.vercel.app/",
-    previewImage: "/project-previews/applytrack-dashboard.png",
-    previewUrl: "https://apply-track-six.vercel.app/#/demo",
-    previewLabel: "ApplyTrack live demo preview",
-    copy: "A focused job application workspace built from a problem I was feeling directly.",
-    problem:
-      "It helps me keep companies, roles, statuses, imported spreadsheet rows, and next steps in one calmer place while job searching.",
-    highlights: ["React", "Vite", "Spreadsheet import", "Personal workflow"],
-  },
-  {
-    id: "french-desk",
-    title: "French Desk",
-    category: "learning",
-    role: "Designer & Developer",
-    href: "https://french-learning-theta.vercel.app/",
-    previewImage: "/project-previews/frenchdesk-today.png",
-    previewUrl: "https://french-learning-theta.vercel.app/#/demo",
-    previewLabel: "French Desk live demo preview",
-    copy: "A personal French learning hub for notes that were getting too hard to review.",
-    problem:
-      "It gives me a calmer place to collect vocabulary, phrases, grammar, pronunciation notes, quizzes, and short daily study sessions.",
-    highlights: ["React", "Supabase", "Tailwind", "AI vocabulary autofill"],
-  },
-];
-
-const experienceNotes = [
-  {
-    title: ".NET Developer Co-op",
-    company: "Ontario Ministry of Education",
-    period: "Sep 2024 - Dec 2024",
-    logo: "ontario",
-    copy: "During my developer co-op, I contributed to the development and maintenance of internal applications used by educators and ministry staff. I collaborated with developers and business stakeholders to implement new features, resolve issues, and improve application usability using .NET technologies and modern development practices.",
-    tags: [".NET", "Web apps", "Stakeholder collaboration"],
-  },
-  {
-    title: "IT QA Assistant Co-op",
-    company: "Ontario Ministry of Education",
-    period: "Jan 2024 - Aug 2024",
-    logo: "ontario",
-    copy: "As an IT QA Assistant, I was responsible for ensuring the quality and reliability of educational applications used across Ontario. I designed and executed test cases, reported and verified defects, and developed automation scripts to improve testing efficiency while working closely with developers and business teams.",
-    tags: ["QA", "Automation", "HP ALM"],
-  },
-  {
-    title: "Quality Assurance Tester Co-op",
-    company: "Fresh City Farms",
-    period: "Jan 2023 - Apr 2023",
-    logo: "fresh",
-    copy: "At Fresh City Farms, I supported the quality assurance process for the company's e-commerce platform and internal systems. I performed functional and regression testing, documented defects with detailed reproduction steps, and collaborated with developers to ensure a smooth and reliable user experience.",
-    tags: ["Regression testing", "Jira", "E-commerce"],
-  },
-];
-
-const skillGroups = [
-  {
-    id: "frontend",
-    title: "Frontend Product Building",
-    icon: Code2,
-    copy: "React interfaces, responsive layouts, product workflows, and UI polish that makes tools feel clear.",
-    tags: ["React", "JavaScript", "HTML", "CSS", "Vite"],
-  },
-  {
-    id: "data",
-    title: "Data And Systems Thinking",
-    icon: Cpu,
-    copy: "Comfortable working around dashboards, collection workflows, validation rules, and data-heavy screens.",
-    tags: ["Python", "SQL", "C", "Data workflows"],
-  },
-  {
-    id: "qa",
-    title: "QA Mindset",
-    icon: Check,
-    copy: "I look for edge cases, unclear states, broken assumptions, and details that create real user friction.",
-    tags: ["Manual testing", "Test cases", "Defect reports", "Automation"],
-  },
-];
+const skillIcons = {
+  frontend: Code2,
+  data: Cpu,
+  qa: Check,
+};
 
 const contactLinks = [
   {
@@ -128,9 +38,38 @@ const contactLinks = [
   },
 ];
 
-function Navbar({ activeSection, onOpenResume }) {
+function LanguageSwitch({ locale, onChange, label, className = "" }) {
+  return (
+    <div className={`language-switch ${className}`.trim()} role="group" aria-label={label}>
+      <button
+        className={locale === "en" ? "is-active" : ""}
+        type="button"
+        aria-pressed={locale === "en"}
+        onClick={() => onChange("en")}
+      >
+        EN
+      </button>
+      <button
+        className={locale === "zh" ? "is-active" : ""}
+        type="button"
+        aria-pressed={locale === "zh"}
+        onClick={() => onChange("zh")}
+      >
+        中文
+      </button>
+    </div>
+  );
+}
+
+function Navbar({ activeSection, content, locale, onLocaleChange, onOpenResume }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const navLinks = [
+    { id: "projects", name: content.projects },
+    { id: "skills", name: content.skills },
+    { id: "experience", name: content.experience },
+    { id: "contact", name: content.contact },
+  ];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -142,34 +81,39 @@ function Navbar({ activeSection, onOpenResume }) {
   return (
     <nav className={`site-nav ${scrolled ? "is-scrolled" : ""}`}>
       <div className="site-nav-inner">
-        <a className="brand-mark" href="#home" aria-label="Back to top">
+        <a className="brand-mark" href="#home" aria-label={content.backToTop}>
           <Terminal size={16} aria-hidden="true" />
           <span>YY_SYSTEM</span>
         </a>
 
         <div className="desktop-nav">
           {navLinks.map((link) => {
-            const isActive = activeSection === link.href.slice(1);
+            const isActive = activeSection === link.id;
             return (
-              <a className={isActive ? "is-active" : ""} href={link.href} key={link.name}>
+              <a className={isActive ? "is-active" : ""} href={`#${link.id}`} key={link.id}>
                 {link.name}
               </a>
             );
           })}
+          <LanguageSwitch
+            locale={locale}
+            onChange={onLocaleChange}
+            label={content.language}
+          />
           <button className="nav-resume" type="button" onClick={onOpenResume}>
-            Resume
+            {content.resume}
           </button>
         </div>
 
         <div className="mobile-nav-actions">
           <button className="nav-resume compact" type="button" onClick={onOpenResume}>
-            Resume
+            {content.resume}
           </button>
           <button
             className="mobile-menu-button"
             type="button"
             aria-expanded={mobileMenuOpen}
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-label={mobileMenuOpen ? content.closeMenu : content.openMenu}
             onClick={() => setMobileMenuOpen((current) => !current)}
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -179,11 +123,17 @@ function Navbar({ activeSection, onOpenResume }) {
 
       {mobileMenuOpen && (
         <div className="mobile-drawer">
+          <LanguageSwitch
+            className="mobile-language-switch"
+            locale={locale}
+            onChange={onLocaleChange}
+            label={content.language}
+          />
           {navLinks.map((link) => (
             <a
-              className={activeSection === link.href.slice(1) ? "is-active" : ""}
-              href={link.href}
-              key={link.name}
+              className={activeSection === link.id ? "is-active" : ""}
+              href={`#${link.id}`}
+              key={link.id}
               onClick={() => setMobileMenuOpen(false)}
             >
               {link.name}
@@ -195,20 +145,14 @@ function Navbar({ activeSection, onOpenResume }) {
   );
 }
 
-function Hero({ onScrollToProjects, onScrollToContact }) {
+function Hero({ content, onScrollToProjects, onScrollToContact }) {
   const [typedWord, setTypedWord] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [consoleActive, setConsoleActive] = useState(false);
   const [consoleInput, setConsoleInput] = useState("");
-  const [consoleLogs, setConsoleLogs] = useState([
-    "YY_PORTFOLIO OS v1.0 initialized.",
-    "LOADING PROJECT WORKSPACE...",
-    "STATUS: AVAILABLE_FOR_HIRE",
-    'Type "help" for available commands.',
-    "",
-  ]);
+  const [consoleLogs, setConsoleLogs] = useState(() => content.console.initial);
   const consoleInputRef = useRef(null);
   const consoleLogRef = useRef(null);
   const consolePanelRef = useRef(null);
@@ -218,7 +162,7 @@ function Hero({ onScrollToProjects, onScrollToContact }) {
       return undefined;
     }
 
-    const currentWord = terminalWords[wordIndex];
+    const currentWord = content.terminalWords[wordIndex];
     const delay = !isDeleting && charIndex === currentWord.length ? 1600 : isDeleting ? 65 : 125;
 
     const timer = window.setTimeout(() => {
@@ -229,7 +173,7 @@ function Hero({ onScrollToProjects, onScrollToContact }) {
 
       if (isDeleting && charIndex === 0) {
         setIsDeleting(false);
-        setWordIndex((current) => (current + 1) % terminalWords.length);
+        setWordIndex((current) => (current + 1) % content.terminalWords.length);
         return;
       }
 
@@ -243,7 +187,7 @@ function Hero({ onScrollToProjects, onScrollToContact }) {
     }, delay);
 
     return () => window.clearTimeout(timer);
-  }, [charIndex, consoleActive, isDeleting, wordIndex]);
+  }, [charIndex, consoleActive, content.terminalWords, isDeleting, wordIndex]);
 
   useEffect(() => {
     if (!consoleLogRef.current) {
@@ -304,47 +248,11 @@ function Hero({ onScrollToProjects, onScrollToContact }) {
 
   function submitConsole(event) {
     event.preventDefault();
-    const command = consoleInput.trim().toLowerCase();
-    if (!command) {
+    const rawCommand = consoleInput.trim().toLowerCase();
+    if (!rawCommand) {
       return;
     }
-
-    const responses = {
-      help: [
-        `> ${consoleInput}`,
-        "Available commands:",
-        "  whoami    - Short profile",
-        "  skills    - Current technical stack",
-        "  projects  - Featured personal projects",
-        "  status    - Availability and location",
-        "  clear     - Clear terminal",
-        "  exit      - Close interactive console",
-      ],
-      whoami: [
-        `> ${consoleInput}`,
-        "YIJUN YUAN // SOFTWARE DEVELOPER + CS STUDENT",
-        "Builds practical tools, tests carefully, and learns by shipping real products.",
-      ],
-      skills: [
-        `> ${consoleInput}`,
-        "CORE STACK:",
-        "  Frontend: React, JavaScript, HTML, CSS, Vite",
-        "  Data:     Python, SQL, C",
-        "  QA:       Manual testing, test cases, defect verification, automation",
-      ],
-      projects: [
-        `> ${consoleInput}`,
-        "FEATURED PROJECTS:",
-        "  Apply Track  - Job application workflow system",
-        "  French Desk  - AI-assisted French learning workspace",
-      ],
-      status: [
-        `> ${consoleInput}`,
-        "AVAILABILITY: AVAILABLE_FOR_HIRE",
-        "LOCATION: Scarborough, Ontario",
-        "FOCUS: Software development, QA, product-minded engineering",
-      ],
-    };
+    const command = content.console.aliases[rawCommand] || rawCommand;
 
     if (command === "clear") {
       setConsoleLogs([]);
@@ -353,7 +261,12 @@ function Hero({ onScrollToProjects, onScrollToContact }) {
     }
 
     if (command === "exit") {
-      setConsoleLogs((current) => [...current, `> ${consoleInput}`, "CLOSING_CONSOLE...", ""]);
+      setConsoleLogs((current) => [
+        ...current,
+        `> ${consoleInput}`,
+        content.console.closing,
+        "",
+      ]);
       setConsoleInput("");
       window.setTimeout(() => setConsoleActive(false), 600);
       return;
@@ -361,9 +274,9 @@ function Hero({ onScrollToProjects, onScrollToContact }) {
 
     setConsoleLogs((current) => [
       ...current,
-      ...(responses[command] || [
-        `> ${consoleInput}`,
-        `Command not recognized: "${command}". Type "help" to view available commands.`,
+      `> ${consoleInput}`,
+      ...(content.console.responses[command] || [
+        `${content.console.unknownStart} "${rawCommand}". ${content.console.unknownEnd}`,
       ]),
       "",
     ]);
@@ -380,7 +293,7 @@ function Hero({ onScrollToProjects, onScrollToContact }) {
           <Terminal size={16} aria-hidden="true" />
           <span className="terminal-prefix">root@portfolio:~$</span>
           {consoleActive ? (
-            <strong>interactive_protocol_online</strong>
+            <strong>{content.console.online}</strong>
           ) : (
             <>
               <span id="terminal-text">{typedWord}</span>
@@ -391,23 +304,15 @@ function Hero({ onScrollToProjects, onScrollToContact }) {
 
         {!consoleActive ? (
           <div className="hero-normal">
-            <p className="section-kicker">Software developer / CS student</p>
+            <p className="section-kicker">{content.kicker}</p>
             <h1 id="intro-title">
-              Hi, I'm <span>Yijun Yuan</span>
+              {content.greeting} <span>{content.name}</span>
             </h1>
-            <p className="hero-intro">
-              I'm a software developer and computer science student who enjoys
-              turning ideas into real products. From full-stack web applications
-              to AI-powered learning tools, I love building software that solves
-              problems and creates meaningful experiences.
-            </p>
-            <p className="hero-subnote">
-              I'm always exploring new technologies and looking for opportunities
-              to learn, grow, and ship impactful products.
-            </p>
+            <p className="hero-intro">{content.intro}</p>
+            <p className="hero-subnote">{content.subnote}</p>
             <div className="hero-actions">
               <button className="primary-action" type="button" onClick={onScrollToProjects}>
-                View projects
+                {content.viewProjects}
                 <ArrowRight size={17} aria-hidden="true" />
               </button>
               <button
@@ -415,28 +320,23 @@ function Hero({ onScrollToProjects, onScrollToContact }) {
                 type="button"
                 onClick={() => {
                   setConsoleActive(true);
-                  setConsoleLogs((current) => [
-                    ...current,
-                    "USER DISPATCHED: INITIALIZE_CONSOLE",
-                    "ACTIVE SYSTEM LINK ATTACHED.",
-                    "",
-                  ]);
+                  setConsoleLogs((current) => [...current, ...content.console.initialized]);
                 }}
               >
-                Initialize protocol
+                {content.initialize}
                 <Terminal size={17} aria-hidden="true" />
               </button>
               <button className="ghost-action" type="button" onClick={onScrollToContact}>
-                Contact node
+                {content.contact}
               </button>
             </div>
           </div>
         ) : (
           <div className="hero-console" ref={consolePanelRef}>
             <div className="console-toolbar">
-              <span>Interactive console</span>
+              <span>{content.console.title}</span>
               <button type="button" onClick={returnToProfile}>
-                Back to profile
+                {content.console.back}
                 <X size={15} aria-hidden="true" />
               </button>
             </div>
@@ -463,30 +363,30 @@ function Hero({ onScrollToProjects, onScrollToContact }) {
                 type="text"
                 value={consoleInput}
                 onChange={(event) => setConsoleInput(event.target.value)}
-                placeholder="try help, whoami, skills, projects, status..."
+                placeholder={content.console.placeholder}
               />
-              <button type="submit">EXEC</button>
+              <button type="submit">{content.console.execute}</button>
             </form>
           </div>
         )}
       </div>
 
       <div className="explore-indicator" aria-hidden="true">
-        <span>Explore</span>
+        <span>{content.explore}</span>
         <i />
       </div>
     </section>
   );
 }
 
-function ProjectPreview({ project }) {
+function ProjectPreview({ project, content }) {
   return (
     <a
       className="project-preview-frame"
       href={project.previewUrl}
       target="_blank"
       rel="noreferrer"
-      aria-label={`Open ${project.title} live preview`}
+      aria-label={`${content.previewAction}: ${project.title}`}
     >
       <span className="project-preview-bar" aria-hidden="true">
         <span />
@@ -497,20 +397,20 @@ function ProjectPreview({ project }) {
       <img
         className="project-preview-image"
         src={project.previewImage}
-        alt={`${project.title} product preview`}
+        alt={`${project.title} ${content.previewAlt}`}
         loading="lazy"
       />
     </a>
   );
 }
 
-function ProjectCard({ project }) {
+function ProjectCard({ project, content }) {
   return (
     <article className={`project-card project-card-${project.id}`}>
       <div className="project-visual">
-        <ProjectPreview project={project} />
+        <ProjectPreview project={project} content={content} />
         <div className="project-preview-note">
-          <span>Live app snapshot</span>
+          <span>{content.liveSnapshot}</span>
           <ExternalLink size={14} aria-hidden="true" />
         </div>
       </div>
@@ -520,14 +420,14 @@ function ProjectCard({ project }) {
         <h3>{project.title}</h3>
         <dl className="project-meta">
           <div>
-            <dt>Role</dt>
+            <dt>{content.role}</dt>
             <dd>{project.role}</dd>
           </div>
         </dl>
         <p>{project.copy}</p>
         <p className="project-problem">{project.problem}</p>
 
-        <div className="tag-list" aria-label={`${project.title} highlights`}>
+        <div className="tag-list" aria-label={`${project.title} ${content.highlights}`}>
           {project.highlights.map((highlight) => (
             <span key={highlight}>{highlight}</span>
           ))}
@@ -535,7 +435,7 @@ function ProjectCard({ project }) {
 
         <div className="project-actions">
           <a href={project.href} target="_blank" rel="noreferrer">
-            Open project
+            {content.openProject}
             <ExternalLink size={15} aria-hidden="true" />
           </a>
         </div>
@@ -544,12 +444,13 @@ function ProjectCard({ project }) {
   );
 }
 
-function Projects() {
+function Projects({ content }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const filteredProjects = sideProjects.filter((project) => {
+  const filteredProjects = content.items.filter((project) => {
     const query = searchQuery.toLowerCase();
     return (
       project.title.toLowerCase().includes(query) ||
+      project.copy.toLowerCase().includes(query) ||
       project.problem.toLowerCase().includes(query) ||
       project.highlights.some((highlight) => highlight.toLowerCase().includes(query))
     );
@@ -559,81 +460,82 @@ function Projects() {
     <section className="content-section projects-section" id="projects">
       <div className="section-header section-header-row">
         <div>
-          <p className="section-kicker">Core deployments</p>
-          <h2>Personal projects</h2>
+          <p className="section-kicker">{content.kicker}</p>
+          <h2>{content.title}</h2>
         </div>
         <div className="section-line" />
         <div className="section-status">
           <span />
-          [{filteredProjects.length}/2_ACTIVE_CORES]
+          [{filteredProjects.length}/{content.items.length}_{content.status}]
         </div>
       </div>
 
       <div className="project-toolbar">
-        <div className="project-filter-chip">All systems</div>
+        <div className="project-filter-chip">{content.filter}</div>
         <label className="project-search">
           <Search size={16} aria-hidden="true" />
           <input
             type="search"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder="Search projects, stack, workflow..."
+            placeholder={content.searchPlaceholder}
           />
         </label>
       </div>
 
       <div className="project-list">
         {filteredProjects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
+          <ProjectCard key={project.id} project={project} content={content} />
         ))}
+        {filteredProjects.length === 0 && <p className="empty-state">{content.empty}</p>}
       </div>
     </section>
   );
 }
 
-function Skills() {
+function Skills({ content }) {
   const [activeSkill, setActiveSkill] = useState("frontend");
-  const active = skillGroups.find((skill) => skill.id === activeSkill) || skillGroups[0];
+  const active = content.groups.find((skill) => skill.id === activeSkill) || content.groups[0];
 
   return (
     <section className="content-section skills-section" id="skills">
       <div className="section-header centered">
-        <p className="section-kicker">Tech stack</p>
-        <h2>Technical proficiencies</h2>
-        <p>
-          A practical mix of frontend building, data workflows, and QA judgment.
-          Click a card to inspect the current focus area.
-        </p>
+        <p className="section-kicker">{content.kicker}</p>
+        <h2>{content.title}</h2>
+        <p>{content.intro}</p>
       </div>
 
       <div className="skill-grid">
-        {skillGroups.map(({ id, title, icon: Icon, copy, tags }) => (
-          <button
-            className={`skill-card ${activeSkill === id ? "is-active" : ""}`}
-            type="button"
-            key={id}
-            onClick={() => setActiveSkill(id)}
-          >
-            <Icon size={28} aria-hidden="true" />
-            <h3>{title}</h3>
-            <p>{copy}</p>
-            <div className="tag-list">
-              {tags.map((tag) => (
-                <span key={tag}>{tag}</span>
-              ))}
-            </div>
-          </button>
-        ))}
+        {content.groups.map(({ id, title, copy, tags }) => {
+          const Icon = skillIcons[id];
+          return (
+            <button
+              className={`skill-card ${activeSkill === id ? "is-active" : ""}`}
+              type="button"
+              key={id}
+              onClick={() => setActiveSkill(id)}
+            >
+              <Icon size={28} aria-hidden="true" />
+              <h3>{title}</h3>
+              <p>{copy}</p>
+              <div className="tag-list">
+                {tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       <div className="skill-report">
         <div>
-          <span>ACTIVE_FOCUS</span>
+          <span>{content.activeFocus}</span>
           <strong>{active.title}</strong>
         </div>
         <div>
-          <span>VERIFICATION_STATUS</span>
-          <strong>learning_by_building</strong>
+          <span>{content.verification}</span>
+          <strong>{content.verificationValue}</strong>
         </div>
         <p>{active.copy}</p>
       </div>
@@ -655,37 +557,34 @@ function ExperienceLogo({ type }) {
   );
 }
 
-function Experience() {
+function Experience({ content }) {
   return (
     <section className="content-section experience-section" id="experience">
       <div className="section-header section-header-row">
         <div>
-          <p className="section-kicker">Career log</p>
-          <h2>Professional journey</h2>
+          <p className="section-kicker">{content.kicker}</p>
+          <h2>{content.title}</h2>
         </div>
       </div>
 
       <div className="experience-layout">
         <aside className="experience-summary">
-          <h3>System metrics</h3>
-          <p>
-            Co-op roles where I contributed to production systems, QA workflows,
-            and public-sector data tools.
-          </p>
+          <h3>{content.summaryTitle}</h3>
+          <p>{content.summary}</p>
           <div className="metric-stack">
             <span>
               <strong>3</strong>
-              Co-op roles
+              {content.roleCount}
             </span>
             <span>
               <strong>2</strong>
-              Product side projects
+              {content.projectCount}
             </span>
           </div>
         </aside>
 
         <div className="timeline-list">
-          {experienceNotes.map((item) => (
+          {content.items.map((item) => (
             <article className="timeline-item" key={`${item.company}-${item.title}`}>
               <div className="timeline-logo" aria-hidden="true">
                 <ExperienceLogo type={item.logo} />
@@ -713,32 +612,26 @@ function Experience() {
   );
 }
 
-function Contact({ copiedEmail, onCopyEmail }) {
+function Contact({ content, copiedEmail, onCopyEmail }) {
   return (
     <section className="content-section contact-section" id="contact">
       <header>
         <h2>
-          Let's build something <span>useful</span>
+          {content.titleBefore} <span>{content.titleAccent}</span>
         </h2>
-        <p>
-          Open to all kinds of opportunities where I can build useful products,
-          contribute carefully, and keep growing while making impact.
-        </p>
+        <p>{content.intro}</p>
       </header>
 
       <div className="contact-grid">
         <div className="contact-card message-card">
           <h3>
             <Terminal size={17} aria-hidden="true" />
-            TRANSMIT_MESSAGE
+            {content.messageTitle}
           </h3>
-          <p>
-            The fastest route is email. Send the context, the problem, and what
-            kind of help you need.
-          </p>
+          <p>{content.message}</p>
           <button className="send-email-button" type="button" onClick={onCopyEmail}>
             <Send size={17} aria-hidden="true" />
-            {copiedEmail ? "EMAIL_COPIED" : "COPY_EMAIL_ADDRESS"}
+            {copiedEmail ? content.copiedEmail : content.copyEmail}
           </button>
           <a className="email-address" href={`mailto:${emailAddress}`}>
             {emailAddress}
@@ -748,14 +641,16 @@ function Contact({ copiedEmail, onCopyEmail }) {
         <div className="contact-card network-card">
           <h3>
             <BriefcaseBusiness size={17} aria-hidden="true" />
-            NETWORK_NODES
+            {content.networkTitle}
           </h3>
           {contactLinks.map(({ label, href, Icon }) => (
             <a href={href} key={label} target="_blank" rel="noreferrer">
               <Icon size={20} aria-hidden="true" />
               <span>
                 <strong>{label}</strong>
-                <small>{label === "GitHub" ? "/YijunYuan-Work" : "Professional profile"}</small>
+                <small>
+                  {label === "GitHub" ? "/YijunYuan-Work" : content.professionalProfile}
+                </small>
               </span>
               <ExternalLink size={15} aria-hidden="true" />
             </a>
@@ -763,8 +658,8 @@ function Contact({ copiedEmail, onCopyEmail }) {
           <a href={resumeUrl}>
             <Download size={20} aria-hidden="true" />
             <span>
-              <strong>Resume</strong>
-              <small>Download PDF</small>
+              <strong>{content.resume}</strong>
+              <small>{content.resumeDetail}</small>
             </span>
             <ExternalLink size={15} aria-hidden="true" />
           </a>
@@ -774,17 +669,17 @@ function Contact({ copiedEmail, onCopyEmail }) {
   );
 }
 
-function Footer() {
+function Footer({ content }) {
   return (
     <footer className="site-footer">
       <div>
         <Terminal size={16} aria-hidden="true" />
         <strong>YY_PORTFOLIO</strong>
       </div>
-      <span>2026 // BUILT_WITH_REACT</span>
+      <span>{content.builtWith}</span>
       <span className="online-node">
         <i />
-        NODES_SECURE
+        {content.status}
       </span>
     </footer>
   );
@@ -793,6 +688,20 @@ function Footer() {
 function App() {
   const [activeSection, setActiveSection] = useState("home");
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [locale, setLocale] = useState(() => {
+    const savedLocale = window.localStorage.getItem("portfolio-language");
+    if (savedLocale === "en" || savedLocale === "zh") {
+      return savedLocale;
+    }
+    return window.navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en";
+  });
+  const content = portfolioContent[locale];
+
+  useEffect(() => {
+    window.localStorage.setItem("portfolio-language", locale);
+    document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
+    document.title = content.pageTitle;
+  }, [content.pageTitle, locale]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -823,24 +732,32 @@ function App() {
 
   return (
     <div className="app-shell">
-      <Navbar activeSection={activeSection} onOpenResume={() => window.open(resumeUrl, "_blank")} />
+      <Navbar
+        activeSection={activeSection}
+        content={content.nav}
+        locale={locale}
+        onLocaleChange={setLocale}
+        onOpenResume={() => window.open(resumeUrl, "_blank")}
+      />
 
       <main>
         <Hero
+          key={locale}
+          content={content.hero}
           onScrollToProjects={() => scrollTo("projects")}
           onScrollToContact={() => scrollTo("contact")}
         />
         <div className="glow-divider" />
-        <Projects />
+        <Projects content={content.projects} />
         <div className="glow-divider" />
-        <Skills />
+        <Skills content={content.skills} />
         <div className="glow-divider" />
-        <Experience />
+        <Experience content={content.experience} />
         <div className="glow-divider" />
-        <Contact copiedEmail={copiedEmail} onCopyEmail={copyEmail} />
+        <Contact content={content.contact} copiedEmail={copiedEmail} onCopyEmail={copyEmail} />
       </main>
 
-      <Footer />
+      <Footer content={content.footer} />
     </div>
   );
 }

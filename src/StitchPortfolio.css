@@ -48,6 +48,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html[lang="zh-CN"] body {
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", var(--font-sans);
+}
+
+html[lang="zh-CN"] .hero-normal h1,
+html[lang="zh-CN"] .section-header h2,
+html[lang="zh-CN"] .contact-section h2 {
+  letter-spacing: 0;
+}
+
 button,
 input,
 textarea,
@@ -137,6 +147,48 @@ input:focus-visible {
 
 .desktop-nav {
   gap: 28px;
+}
+
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid rgba(0, 245, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(0, 245, 255, 0.05);
+  padding: 3px;
+}
+
+.language-switch button {
+  min-width: 38px;
+  min-height: 30px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.language-switch button:hover {
+  color: var(--cyan-hot);
+}
+
+.language-switch button.is-active {
+  background: var(--cyan-hot);
+  color: #002021;
+  box-shadow: 0 0 12px rgba(0, 245, 255, 0.22);
+}
+
+.mobile-language-switch {
+  justify-self: start;
+  margin-bottom: 4px;
 }
 
 .desktop-nav a,
@@ -696,6 +748,15 @@ main {
 .project-list {
   display: grid;
   gap: 46px;
+}
+
+.empty-state {
+  margin: 0;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  color: var(--text-muted);
+  padding: 28px;
+  text-align: center;
 }
 
 .project-card {
