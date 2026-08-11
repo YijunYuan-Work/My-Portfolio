@@ -16,7 +16,7 @@ import {
 import "./StitchPortfolio.css";
 import { portfolioContent } from "./portfolioContent.js";
 
-const resumeUrl = "/resume-developer.pdf";
+const resumeUrl = "/Yijun_Yuan_resume.pdf";
 const emailAddress = "yijun.yuan@alumni.utoronto.ca";
 
 const skillIcons = {
